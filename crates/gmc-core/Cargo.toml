@@ -1,0 +1,20 @@
+[package]
+name = "gmc-core"
+version = "0.0.0"
+description = "Pure-logic deterministic core for the GMC (Global Merit Chain) protocol. Runtime-agnostic; reusable by a Substrate L1 pallet and a ZK Rollup L2."
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints.rust]
+# Keep the placeholder skeleton quiet until modules are filled in by later tasks.
+missing_docs = "allow"
+
+[dependencies]
+# Intentionally empty: gmc-core is a pure-logic library and MUST NOT depend on any
+# Substrate / chain-runtime crates. Shared types and error codes arrive in task 1.2.
+
+[dev-dependencies]
+# Property-based testing harness is wired up here so the test infrastructure is ready.
+# The shared generator skeleton itself is task 1.3 — not implemented in task 1.1.
+proptest = { workspace = true }

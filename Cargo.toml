@@ -1,0 +1,19 @@
+# GMC (Global Merit Chain) — Cargo workspace root
+#
+# This workspace hosts the pure-logic core of the GMC protocol. The deterministic
+# core lives in `crates/gmc-core` so it can be reused by both a future Substrate L1
+# pallet and a ZK Rollup L2 implementation without depending on any chain runtime.
+[workspace]
+resolver = "2"
+members = [
+    "crates/gmc-core",
+]
+
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/global-merit-chain/global-merit-chain"
+
+[workspace.dependencies]
+# Property-based testing framework (default tech-stack decision; see crates/gmc-core/src/lib.rs).
+proptest = "1"
