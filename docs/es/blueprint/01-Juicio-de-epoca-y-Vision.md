@@ -57,7 +57,7 @@ Específicamente:
 |-----------|-------|
 | Un reemplazo de la moneda | MeriToken no es negociable; no es un medio de intercambio |
 | Una mejora de los sistemas de crédito existentes | Se dirige a una era completamente nueva, no es un parche para el presente |
-| Un producto de inversión o instrumento financiero | No tiene valor especulativo y no puede comprarse ni venderse |
+| Un producto de inversión o instrumento financiero | No tiene valor especulativo; no puede revenderse, transferirse ni liquidarse (sin mercado secundario). El único punto de entrada monetario es el arranque en frío opcional, unidireccional y con tope (ver Capítulo 13), que decae hacia el valor mínimo como todo Merit — el dinero solo compra una ventaja temporal, nunca voz persistente |
 | Una fantasía utópica | Se basa en tendencias tecnológicas ya en marcha — una apuesta pragmática a largo plazo |
 
 ## 1.6 Sentando las bases para el futuro

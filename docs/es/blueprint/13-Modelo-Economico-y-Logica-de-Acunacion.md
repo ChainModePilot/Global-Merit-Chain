@@ -4,7 +4,7 @@
 
 Para reiterar el posicionamiento económico de MeriToken:
 
-- No negociable, no intercambiable
+- No negociable, no transferible, no liquidable (sin mercado secundario)
 - Sin valor especulativo
 - No es un medio de intercambio
 - Puramente una medida de contribución y un portador de poder de voto
@@ -59,6 +59,16 @@ Los usuarios activos disminuyen → la acuñación disminuye mientras el decaimi
 - minMerit inicial = e
 - Asegura que cada nuevo usuario tenga capacidad básica de participación
 - e es lo suficientemente pequeño como para no diluir significativamente a los usuarios existentes, pero lo suficientemente grande como para garantizar derechos básicos de participación
+
+### Arranque en frío opcional (unidireccional, con tope, decreciente)
+
+Para resolver la voz del momento presente y el problema de arranque en frío, un participante PUEDE opcionalmente realizar un pago fiat unidireccional para recibir una concesión de reputación inicial por encima de la línea base, **hasta un tope rígido**. Este es el **único** punto de entrada monetario del sistema, y es estrictamente unidireccional:
+
+- **Sin salida**: no existe una ruta reputación→fiat — sin reventa, sin liquidación, sin mercado secundario, sin transferencia.
+- **Decae como todo Merit**: la reputación inicial comprada está sujeta al mismo decaimiento y colapsa hacia el valor mínimo (`minMerit`). PUEDE configurarse para decaer más rápido y/o ser no renovable, para evitar "seguir pagando = poder permanente".
+- **Efecto neto**: una compra solo adquiere una ventaja temporal. Sin contribución genuina posterior, la reputación comprada decae necesariamente hacia el valor mínimo — el dinero no puede comprar voz persistente. En estado estacionario, la voz se determina por la contribución sostenida.
+
+> ⚠️ Parámetros por especificar (solo alineación cualitativa): el tope de compra; si la reputación comprada decae más rápido o es no renovable; el acoplamiento exacto al modelo de decaimiento/valor mínimo. Véase la ADR `decisions/0001` de iFay (Arranque Decreciente). Esto **refina**, no revierte, el posicionamiento de MeriToken como "medida de contribución, no activo financiero".
 
 ## 13.6 Análisis de incentivos
 

@@ -57,7 +57,7 @@ Specifically:
 |------------|--------|
 | A replacement for currency | MeriToken is non-tradable; it is not a medium of exchange |
 | An improvement on existing credit systems | It targets an entirely new era, not a patch for the present |
-| An investment product or financial instrument | It has no speculative value and cannot be bought or sold |
+| An investment product or financial instrument | It has no speculative value; it cannot be resold, transferred, or cashed out (no secondary market). The only inbound monetary touchpoint is the optional, one-way, capped cold-start bootstrap (see Chapter 13), which decays to the floor value like all Merit — so money buys only a temporary head start, never persistent voice |
 | A utopian fantasy | It is grounded in technological trends already in motion — a pragmatic long-term play |
 
 ## 1.6 Laying the Groundwork for the Future

@@ -57,7 +57,7 @@ Im Einzelnen:
 |---------------|------------|
 | Ein Ersatz für Währung | MeriToken ist nicht handelbar; es ist kein Tauschmittel |
 | Eine Verbesserung bestehender Kreditsysteme | Es zielt auf eine völlig neue Ära ab, nicht auf einen Flicken für die Gegenwart |
-| Ein Anlageprodukt oder Finanzinstrument | Es hat keinen spekulativen Wert und kann weder gekauft noch verkauft werden |
+| Ein Anlageprodukt oder Finanzinstrument | Es hat keinen spekulativen Wert; es kann nicht weiterverkauft, übertragen oder ausgezahlt werden (kein Sekundärmarkt). Der einzige monetäre Eingangspunkt ist der optionale, einseitige, gedeckelte Kaltstart-Bootstrap (siehe Kapitel 13), der wie jeder Merit zur Untergrenze hin abklingt — Geld erkauft also nur einen vorübergehenden Vorsprung, niemals dauerhafte Mitsprache |
 | Eine utopische Fantasie | Es basiert auf bereits in Gang befindlichen technologischen Trends — ein pragmatischer Langzeitansatz |
 
 ## 1.6 Den Grundstein für die Zukunft legen

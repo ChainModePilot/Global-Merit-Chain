@@ -4,10 +4,12 @@
 
 To reiterate MeriToken's economic positioning:
 
-- Non-tradable, non-exchangeable
+- Non-tradable, non-transferable, non-cashable (no secondary market)
 - No speculative value
 - Not a medium of exchange
 - Purely a measure of contribution and a carrier of voting power
+
+> The sole inbound monetary touchpoint is the optional, one-way, capped cold-start bootstrap defined in §13.5. It is strictly one-way (no reputation→fiat exit) and, like all Merit, decays to the floor value — so it never confers persistent voice. This refines, not reverses, the positioning above.
 
 Therefore, the constraints of traditional monetary economics (inflation control, monetary policy) do not apply to MeriToken.
 
@@ -59,6 +61,16 @@ Active users decrease → minting decreases while decay continues → total supp
 - Initial minMerit = e
 - Ensures every new user has basic participation capability
 - e is small enough not to significantly dilute existing users, yet large enough to guarantee basic participation rights
+
+### Optional Cold-Start Bootstrap (one-way, capped, decaying)
+
+To address present-moment voice and the cold-start problem, a participant MAY optionally make a one-way fiat payment to receive an above-baseline initial reputation grant, **up to a hard cap**. This is the system's **only** inbound monetary touchpoint, and it is strictly one-way:
+
+- **No exit**: there is no reputation→fiat path — no resale, no cash-out, no secondary market, no transfer.
+- **Decays like all Merit**: purchased initial reputation is subject to the same decay and collapses toward the floor value (`minMerit`). It MAY be configured to decay faster and/or be non-renewable, to prevent "keep paying = permanent power."
+- **Net effect**: a purchase buys only a temporary head start. Without subsequent genuine contribution, the purchased reputation necessarily decays to the floor value — money cannot buy persistent voice. At steady state, voice is determined by sustained contribution.
+
+> ⚠️ Parameters to be specified (this is qualitative alignment only): the purchase cap; whether purchased reputation decays faster or is non-renewable; the exact coupling to the decay/floor model. See iFay ADR `decisions/0001` (Decaying Bootstrap) for the cross-system ruling. This **refines**, not reverses, MeriToken's "measure of contribution, not financial asset" positioning.
 
 ## 13.6 Incentive Analysis
 

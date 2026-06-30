@@ -4,7 +4,7 @@
 
 Pour réitérer le positionnement économique de MeriToken :
 
-- Non-échangeable, non-convertible
+- Non négociable, non transférable, non encaissable (pas de marché secondaire)
 - Aucune valeur spéculative
 - N'est pas un moyen d'échange
 - Purement une mesure de contribution et un porteur de pouvoir de vote
@@ -59,6 +59,16 @@ Utilisateurs actifs en diminution → la frappe diminue tandis que la décroissa
 - minMerit initial = e
 - Garantit que chaque nouvel utilisateur a une capacité de participation de base
 - e est suffisamment petit pour ne pas diluer significativement les utilisateurs existants, mais suffisamment grand pour garantir les droits de participation de base
+
+### Amorçage à froid optionnel (unidirectionnel, plafonné, décroissant)
+
+Pour résoudre la voix de l'instant présent et le problème du démarrage à froid, un participant PEUT facultativement effectuer un paiement fiat unidirectionnel afin de recevoir une attribution de réputation initiale au-dessus de la ligne de base, **dans la limite d'un plafond strict**. C'est le **seul** point d'entrée monétaire du système, et il est strictement unidirectionnel :
+
+- **Pas de sortie** : il n'existe aucune voie réputation→fiat — pas de revente, pas d'encaissement, pas de marché secondaire, pas de transfert.
+- **Décroît comme tout Merit** : la réputation initiale achetée subit la même décroissance et s'effondre vers la valeur plancher (`minMerit`). Elle PEUT être configurée pour décroître plus vite et/ou être non renouvelable, afin d'empêcher « continuer à payer = pouvoir permanent ».
+- **Effet net** : un achat n'achète qu'une avance temporaire. Sans contribution réelle ultérieure, la réputation achetée décroît nécessairement vers la valeur plancher — l'argent ne peut pas acheter une voix durable. En régime permanent, la voix est déterminée par la contribution soutenue.
+
+> ⚠️ Paramètres à spécifier (alignement qualitatif uniquement) : le plafond d'achat ; si la réputation achetée décroît plus vite ou est non renouvelable ; le couplage exact au modèle de décroissance/plancher. Voir l'ADR `decisions/0001` d'iFay (Amorçage Décroissant). Ceci **affine**, sans l'inverser, le positionnement de MeriToken comme « mesure de contribution, pas actif financier ».
 
 ## 13.6 Analyse des incitations
 

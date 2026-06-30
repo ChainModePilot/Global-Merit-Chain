@@ -4,7 +4,7 @@
 
 Zur Wiederholung der wirtschaftlichen Positionierung von MeriToken:
 
-- Nicht handelbar, nicht austauschbar
+- Nicht handelbar, nicht übertragbar, nicht auszahlbar (kein Sekundärmarkt)
 - Kein spekulativer Wert
 - Kein Tauschmittel
 - Rein ein Maß für Beiträge und Träger von Stimmrecht
@@ -59,6 +59,16 @@ Aktive Nutzer sinken → Prägung sinkt während Verfall fortbesteht → Gesamta
 - Anfängliches minMerit = e
 - Stellt sicher, dass jeder neue Nutzer grundlegende Teilnahmefähigkeit hat
 - e ist klein genug, um bestehende Nutzer nicht signifikant zu verwässern, aber groß genug, um grundlegende Teilnahmerechte zu garantieren
+
+### Optionaler Kaltstart-Bootstrap (einseitig, gedeckelt, abklingend)
+
+Zur Lösung der gegenwärtigen Mitsprache und des Kaltstartproblems KANN ein Teilnehmer optional eine einseitige Fiat-Zahlung leisten, um eine über dem Basiswert liegende anfängliche Reputationszuteilung zu erhalten – **bis zu einer harten Obergrenze**. Dies ist der **einzige** monetäre Eingangspunkt des Systems und streng einseitig:
+
+- **Kein Ausgang**: Es gibt keinen Reputation→Fiat-Pfad – kein Weiterverkauf, keine Auszahlung, kein Sekundärmarkt, keine Übertragung.
+- **Klingt ab wie jeder Merit**: Die gekaufte anfängliche Reputation unterliegt demselben Abklingen und kollabiert zur Untergrenze (`minMerit`). Sie KANN so konfiguriert werden, dass sie schneller abklingt und/oder nicht erneuerbar ist, um „weiter zahlen = dauerhafte Macht" zu verhindern.
+- **Nettoeffekt**: Ein Kauf erkauft nur einen vorübergehenden Vorsprung. Ohne nachfolgenden echten Beitrag klingt die gekaufte Reputation zwangsläufig zur Untergrenze ab – Geld kann keine dauerhafte Mitsprache erkaufen. Im stationären Zustand wird die Mitsprache durch fortlaufenden Beitrag bestimmt.
+
+> ⚠️ Noch zu spezifizierende Parameter (nur qualitative Abstimmung): Kaufobergrenze; ob gekaufte Reputation schneller abklingt oder nicht erneuerbar ist; die genaue Kopplung an das Abkling-/Untergrenzen-Modell. Siehe iFay ADR `decisions/0001` (Decaying Bootstrap) für die systemübergreifende Entscheidung. Dies **verfeinert** die Positionierung von MeriToken als „Maß für Beitrag, kein finanzieller Vermögenswert" und kehrt sie nicht um.
 
 ## 13.6 Anreizanalyse
 
