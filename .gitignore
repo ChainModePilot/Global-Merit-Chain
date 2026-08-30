@@ -4,3 +4,21 @@
 
 # macOS
 .DS_Store
+
+# === iAccord 过程工具：留本地，不进 github repo ===
+# 依据 PO 裁定 D-1 / D-2（2026-08-12）：
+#   D-1 = openspec 永久留本地、只供开发团队；docs/ 是唯一公开产物。
+#   D-2 = 全 15 仓统一忽略 openspec/ 与 .kiro/。
+# 亦为组织宪章 multi-repo-coordination「过程工具不进 github repo」的落地。
+# 公开产物保持不变：crates/、docs/、schema/、release/、Cargo.toml、README、LICENSE。
+openspec/
+.kiro/
+.dev-os/
+.cursor/
+.githooks/
+decisions/
+AGENTS.md
+
+# 注意：.gitignore 不影响已跟踪文件。本仓历史上有 4 个
+# `.kiro/specs/gmc-core-protocol/**` 文件被跟踪（阶段 1 归档后成为待提交删除），
+# 依 PO 裁定 D-3 一并提交删除。
