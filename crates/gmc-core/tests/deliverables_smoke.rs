@@ -17,18 +17,27 @@ use gmc_core::gmc_base::GmcBase;
 use gmc_core::l1_settlement::{ConsensusConfig, L1Settlement};
 use gmc_core::types::ChainId;
 
-/// Reads the design document from the spec directory.
+/// Reads the technology-selection specification from the openspec authority directory.
 ///
-/// `gmc-core` lives at `crates/gmc-core`, so `design.md` is two directories up under
-/// `.kiro/specs/gmc-core-protocol/`. Building the path from `CARGO_MANIFEST_DIR` keeps
-/// the test independent of the process working directory.
+/// `gmc-core` lives at `crates/gmc-core`, so the spec is two directories up under
+/// `openspec/specs/technology-selection/`. Building the path from `CARGO_MANIFEST_DIR`
+/// keeps the test independent of the process working directory.
+///
+/// **Why openspec and not `.kiro/specs`**: the organisation charter
+/// (`authoritative-source-map`) designates `openspec/specs/` as this repository's single
+/// specification authority. The former Kiro spec directory was archived to
+/// `.kiro/_archive/` on 2026-08-12 and is explicitly forbidden as a source of truth, so
+/// this test now asserts against the authoritative location. The raw comparison table and
+/// recommendation were carried over verbatim into the spec's
+/// "技术选型评估记录" section, which is what these assertions inspect.
 fn read_design_doc() -> String {
     let path = concat!(
         env!("CARGO_MANIFEST_DIR"),
-        "/../../.kiro/specs/gmc-core-protocol/design.md"
+        "/../../openspec/specs/technology-selection/spec.md"
     );
-    std::fs::read_to_string(path)
-        .unwrap_or_else(|e| panic!("design document must be readable at {path}: {e}"))
+    std::fs::read_to_string(path).unwrap_or_else(|e| {
+        panic!("technology-selection spec must be readable at {path}: {e}")
+    })
 }
 
 /// Extracts the "技术选型评估" section: from its `##` heading up to the next `## `
