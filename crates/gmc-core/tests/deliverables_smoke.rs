@@ -1,174 +1,43 @@
-//! Deliverables & one-time-configuration **smoke tests** (task 21.2).
+//! Deliverable smoke checks for one-time configuration requirements.
 //!
 //! These are plain `#[test]` smoke/unit checks — **NOT** property tests — so they carry
-//! no `Feature: ... Property N` label. They verify two kinds of "deliverable" acceptance
-//! criteria that the design explicitly routes to smoke tests rather than PBT:
+//! no `Feature: ... Property N` label. They verify the "deliverable" acceptance criteria
+//! that the design explicitly routes to smoke tests rather than PBT:
 //!
-//! 1. **Design-document deliverable (Requirements 5.2 / 5.3 / 5.6).** The design's
-//!    "技术选型评估" (technology selection evaluation) section must contain a baseline
-//!    candidate, a comparison candidate, a three-dimensional comparison table, and a
-//!    recommendation with rationale. The section is read at runtime from the spec
-//!    directory via a path built from `CARGO_MANIFEST_DIR`.
-//! 2. **One-time configuration (Requirements 1.1 / 13.4 / 13.6).** The root-node config
-//!    (`GMC_Base` is the fixed depth-0 root), L1 being fee-free, and L1 running
-//!    GRANDPA/BABE consensus are asserted through the crate's public API.
+//! **One-time configuration (Requirements 1.1 / 13.4 / 13.6).** The root-node config
+//! (`GMC_Base` is the fixed depth-0 root), L1 being fee-free, and L1 running
+//! GRANDPA/BABE consensus are asserted through the crate's public API.
+//!
+//! # Why the design-document assertions were removed (2026-08-12)
+//!
+//! This file previously also asserted on prose inside a specification document
+//! (Requirements 5.2 / 5.3 / 5.6: that the "技术选型评估" section names a baseline
+//! candidate, a comparison candidate, a three-dimensional comparison table, and a
+//! recommendation with rationale). Those four tests read the document at runtime —
+//! originally from `.kiro/specs/`, later repointed to `openspec/specs/`.
+//!
+//! They were removed because that approach became structurally unsound:
+//!
+//! 1. **The file is deliberately not in git.** Per PO decision D-1/D-2 (2026-08-12),
+//!    `openspec/` is a development-team-only asset and is gitignored in all repositories;
+//!    `docs/` is the sole published artifact. A test in this public repository therefore
+//!    cannot depend on `openspec/` content: it passes locally (where `openspec/` exists)
+//!    but panics with "No such file or directory" in a fresh clone or in CI.
+//! 2. **The constraint is already enforced where it belongs.** The same requirements are
+//!    expressed as six requirements in `openspec/specs/technology-selection/spec.md`
+//!    (candidate scope, three-dimensional comparison, recommendation rationale, and the
+//!    obligation to record major technology decisions) and are checked by
+//!    `openspec validate --all --strict` plus review — not by `cargo test`.
+//! 3. **Asserting on document prose from an integration test is the wrong layer.**
+//!    Whether a specification contains a Markdown table is a documentation-governance
+//!    concern, not a property of this crate's code.
+//!
+//! Net effect: no constraint was lost, and `cargo test` no longer depends on files that
+//! are absent from the repository. See OQ-P2-GMC-SMOKE in the migration contract.
 
 use gmc_core::gmc_base::GmcBase;
 use gmc_core::l1_settlement::{ConsensusConfig, L1Settlement};
 use gmc_core::types::ChainId;
-
-/// Reads the technology-selection specification from the openspec authority directory.
-///
-/// `gmc-core` lives at `crates/gmc-core`, so the spec is two directories up under
-/// `openspec/specs/technology-selection/`. Building the path from `CARGO_MANIFEST_DIR`
-/// keeps the test independent of the process working directory.
-///
-/// **Why openspec and not `.kiro/specs`**: the organisation charter
-/// (`authoritative-source-map`) designates `openspec/specs/` as this repository's single
-/// specification authority. The former Kiro spec directory was archived to
-/// `.kiro/_archive/` on 2026-08-12 and is explicitly forbidden as a source of truth, so
-/// this test now asserts against the authoritative location. The raw comparison table and
-/// recommendation were carried over verbatim into the spec's
-/// "技术选型评估记录" section, which is what these assertions inspect.
-fn read_design_doc() -> String {
-    let path = concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/../../openspec/specs/technology-selection/spec.md"
-    );
-    std::fs::read_to_string(path).unwrap_or_else(|e| {
-        panic!("technology-selection spec must be readable at {path}: {e}")
-    })
-}
-
-/// Extracts the "技术选型评估" section: from its `##` heading up to the next `## `
-/// heading (or end of file). Asserting against just this slice keeps the deliverable
-/// checks scoped to the technology-selection section.
-fn technology_selection_section(doc: &str) -> &str {
-    let start = doc
-        .find("## 技术选型评估")
-        .expect("design must contain a '技术选型评估' (technology selection) section");
-    let rest = &doc[start..];
-    // Skip past this heading line, then find the next top-level "## " section boundary.
-    let after_heading = rest
-        .find('\n')
-        .map(|nl| start + nl + 1)
-        .unwrap_or(doc.len());
-    let end = doc[after_heading..]
-        .find("\n## ")
-        .map(|rel| after_heading + rel)
-        .unwrap_or(doc.len());
-    &doc[start..end]
-}
-
-// --- Requirements 5.2 / 5.3 / 5.6: design-document deliverable ------------------
-
-#[test]
-fn design_has_technology_selection_section() {
-    // Requirement 5.2: the design records the technology-selection evaluation.
-    let doc = read_design_doc();
-    let section = technology_selection_section(&doc);
-    assert!(
-        section.starts_with("## 技术选型评估"),
-        "the extracted slice must begin at the '技术选型评估' heading"
-    );
-    assert!(
-        !section.trim_end().is_empty(),
-        "the technology-selection section must not be empty"
-    );
-}
-
-#[test]
-fn technology_selection_has_baseline_and_comparison_candidates() {
-    // Requirements 5.2 / 5.3: a baseline candidate AND a comparison candidate are
-    // present, with the baseline being Substrate L1 + ZK Rollup L2.
-    let doc = read_design_doc();
-    let section = technology_selection_section(&doc);
-
-    assert!(
-        section.contains("基准候选"),
-        "technology-selection section must name a baseline candidate (基准候选)"
-    );
-    assert!(
-        section.contains("对照候选"),
-        "technology-selection section must name a comparison candidate (对照候选)"
-    );
-    // The baseline candidate is the Substrate L1 + ZK Rollup L2 architecture.
-    assert!(
-        section.contains("Substrate") && section.contains("Rollup"),
-        "baseline candidate must be the Substrate L1 + ZK Rollup L2 architecture"
-    );
-    // The comparison candidate is the Ethereum-family derivation/sub-chain approach.
-    assert!(
-        section.contains("以太坊") || section.contains("Ethereum"),
-        "comparison candidate must reference Ethereum-family approaches"
-    );
-}
-
-#[test]
-fn technology_selection_has_three_dimensional_comparison_table() {
-    // Requirement 5.3: a three-dimensional comparison table is present. We confirm a
-    // GitHub-flavoured Markdown table (header + separator rows) and the three named
-    // comparison dimensions: transaction cost, throughput, and customizable governance.
-    let doc = read_design_doc();
-    let section = technology_selection_section(&doc);
-
-    // A Markdown table has a header separator row made of pipes and dashes.
-    let has_table_separator = section
-        .lines()
-        .any(|line| line.contains('|') && line.contains("---"));
-    assert!(
-        has_table_separator,
-        "technology-selection section must contain a Markdown comparison table"
-    );
-
-    // The table must contain rows for at least three comparison dimensions: every
-    // table row (and only table rows) starts with a leading pipe in this section.
-    let table_rows = section
-        .lines()
-        .filter(|line| line.trim_start().starts_with('|'))
-        .count();
-    assert!(
-        table_rows >= 5,
-        "the comparison table must have a header, a separator, and ≥3 dimension rows \
-         (found {table_rows} table rows)"
-    );
-
-    // The three named dimensions from the design (cost / throughput / governance).
-    assert!(
-        section.contains("成本"),
-        "comparison table must include a transaction-cost dimension"
-    );
-    assert!(
-        section.contains("吞吐"),
-        "comparison table must include a throughput dimension"
-    );
-    assert!(
-        section.contains("治理"),
-        "comparison table must include a customizable-governance dimension"
-    );
-}
-
-#[test]
-fn technology_selection_has_recommendation_with_rationale() {
-    // Requirement 5.6: a recommendation is given together with its rationale.
-    let doc = read_design_doc();
-    let section = technology_selection_section(&doc);
-
-    assert!(
-        section.contains("选型建议") || section.contains("建议"),
-        "technology-selection section must contain a recommendation (选型建议)"
-    );
-    // The recommendation must select the baseline (Substrate L1 + ZK Rollup L2)...
-    assert!(
-        section.contains("采用基准候选") || section.contains("采用"),
-        "the recommendation must state which candidate is adopted"
-    );
-    // ...and supply a rationale (three-dimension justification).
-    assert!(
-        section.contains("依据"),
-        "the recommendation must be accompanied by a rationale (依据)"
-    );
-}
 
 // --- Requirement 1.1: root-node configuration ----------------------------------
 
